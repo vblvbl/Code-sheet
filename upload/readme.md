@@ -13,10 +13,10 @@
 	</form>
 
 
-	//后台接收
-	//获取本地保存文件位置  一般在配置文件里面有
-	String saveDirectory = Parameters.getUpload_path() + "\\";  
-	//文件最大
+	//后端接收
+	//保存文件位置  
+	String saveDirectory =  "D:\\temp";  
+	//保存文件最大值
 	int maxPostSize = 0x14000000;     
 	//保存文件
 	MultipartRequest multi = null;
