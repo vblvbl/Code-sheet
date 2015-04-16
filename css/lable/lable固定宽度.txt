@@ -1,0 +1,5 @@
+lable 固定宽度   
+
+width:197px;
+		overflow: hidden;
+		display: block;
