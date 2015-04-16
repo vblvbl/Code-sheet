@@ -1,0 +1,9 @@
+不用配置的方法返回json数据，而获得validation信息
+	ValueStack s = ActionContext.getContext().getValueStack();
+		BaseAbsAct act = (BaseAbsAct) s.getRoot().get(1);
+		Map<String, List<String>> map = act.getFieldErrors();
+
+struts2 跳转页面不只是能跳转到页面，还能跳转到action
+	<action name="test_*" class="cn.minimal.moasaic.action.view.QuizAction" method="{1}" >
+			 <result name="input">/vdact.do</result>
+		</action>

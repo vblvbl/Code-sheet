@@ -1,0 +1,2 @@
+ActionContext actionContext = invocation.getInvocationContext();     
+HttpServletRequest request= (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST);

@@ -1,0 +1,31 @@
+传参可以用到的一些方法
+1.jsp可以使用的传参方法
+<jsp:include page="../../inc/nav.jsp">
+		<jsp:param value="settprivate" name="P_CurrPage" />
+</jsp:include>
+${param.P_CurrPage}
+
+2.后台传参前台接收
+request.setAttribute("P_CurrPage","value");
+${P_CurrPage}
+前台也是可以使用el表达式进行接收参数
+后台传集合
+
+可以使用这个标签进行循环
+<c:forEach items="${P_CurrPage}" var="item">
+
+</c:forEach> 
+使用下列标签进行判断,有些像java中的if...else
+<c:choose>
+	<c:when test="">
+	</c:when>
+	<c:otherwise>
+	</c:otherwise>
+</c:choose>
+el可以直接使用标签取map中的值
+${mess1[key]}
+
+会用到的一些包
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>

@@ -1,0 +1,13 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+判断 等于另外一个值
+<c:if test="${value == 0}"> selected </c:if>
+判断值是布尔类型
+<s:if test="${ischeck == true }"> disabled="disabled" </s:if>
+判断值不是为 null 
+<s:if test="${!empty jishuan[0].louxinxi}"></s:if>
+判断值 null 
+<s:if test="${empty jishuan[0].louxinxi}"></s:if>
+循环
+<s:forEach varStatus="vs" items="${jishuan[0].louxinxi}" var="var">
+${var.value}
+</s:forEach>

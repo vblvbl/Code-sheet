@@ -1,0 +1,4 @@
+select * from  Picture where id in (select id from Picture where newspaperClippingId='34e60e25fbb943cab1f0a457e1b97959' ) 
+or id in(select pictureId  from Follow  where newspaperClippingId='34e60e25fbb943cab1f0a457e1b97959')
+
+一张表的字段满足另外一张表中的字段的条件查询

@@ -1,0 +1,45 @@
+1、ORDER BY 中关于NULL的处理
+缺省处理，Oracle在Order by 时认为null是最大值，所以如果是ASC升序则排在最后，DESC降序则排在最前。
+当然，你也可以使用nulls first 或者nulls last 语法来控制NULL的位置。
+Nulls first和nulls last是Oracle Order by支持的语法
+如果Order by 中指定了表达式Nulls first则表示null值的记录将排在最前(不管是asc 还是 desc)
+如果Order by 中指定了表达式Nulls last则表示null值的记录将排在最后 (不管是asc 还是 desc)
+使用语法如下：
+--将nulls始终放在最前
+select * from zl_cbqc order by cb_ld nulls first
+--将nulls始终放在最后
+select * from zl_cbqc order by cb_ld desc nulls last
+2、几种排序的写法
+单列升序：select<column_name> from <table_name> order by <column_name>; （默认升序，即使不写ASC）
+单列降序：select <column_name> from <table_name> order by <column_name> desc;
+多列升序：select <column_one>, <column_two> from <table_name> order by <column_one>, <column_two>;
+多列降序：select <column_one>, <column_two> from <table_name> order by <column_one> desc, <column_two> desc;
+多列混合排序：select <column_one>, <column_two> from <table_name> order by <column_one> desc, <column_two> asc;
+3、今天看到的新写法
+SQL> select * from tb;
+    BLOGID BLOGCLASS
+---------- ------------------------------
+        1 人生
+        2 学习
+        3 工作
+        5 朋友
+SQL> select * from tb order by decode(blogid,3,1,2), blogid;
+    BLOGID BLOGCLASS
+---------- ------------------------------
+        3 工作
+        1 人生
+        2 学习
+        5 朋友
+我所说的就是上面红色的那句话。实现的功能就是不管怎样，BLOGID为3的值必须排在第一位，其他的记录按照BLOGID升序排序。
+shiyiwan同学给我的解释是这样的：“默认升序排序，blogid = 3时返回1，其他则返回2， 所以blogid = 3的记录排在最前啊。”
+wildwave同学也给了个说法：“你将那个decode理解成前面select后面的列，按照那一列排序就好了。”
+我又去试了一条语句，结果如下
+SQL>  select * from tb order by decode(blogid,3,1,2);
+    BLOGID BLOGCLASS
+---------- ------------------------------
+         3 工作
+         5 朋友
+         1 人生
+         2 学习
+我现在的理解是这样的，通过decode()函数，BLOGID值为3的那条记录被转换为了1，而其他的记录都是2，那么按照这个顺序排序，肯定BLOGID为3的那条记录永远在最前面了，不仅如此，注意到后面还加了个按BLOGID默认升序排列，这也就是说对于那些被DECODE转换为2的记录来说，按照它们的BLOGID升序排序。
+呵呵，也不知道对不对，至少现在我是这么理解的，先记下来吧。

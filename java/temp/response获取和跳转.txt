@@ -1,0 +1,3 @@
+HttpServletResponse response = (HttpServletResponse)ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+response.sendRedirect(response.encodeRedirectURL("home"));
+response.sendRedirect("home"); 不带有jssessionid

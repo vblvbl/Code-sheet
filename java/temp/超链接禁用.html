@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>超链接禁用</title>
+<script type="text/javascript">
+      function myclick()
+      {
+ 
+        alert(document.getElementById("1").innerHTML="asdfasdf");
+        
+      }
+
+        function doLinkAll(action){
+        //    var arr=document.getElementsByTagName("A")
+          //  for(var i=0;i <arr.length;i++){
+         //   if (action){ //重新设置链接
+        ///        if (arr[i].rel) arr[i].setAttribute("href",arr[i].rel)
+        ///    }else{ //取消所有链接
+        ///        arr[i].setAttribute("rel",arr[i].href)
+        //        arr[i].removeAttribute("href")
+       //         }
+       //     }
+       //     o1.disabled=!action
+       ///     o2.disabled=action
+        
+
+         var aaa = document.getElementById("2");
+         aaa.removeAttribute("href");
+        }
+      
+ </Script> 
+</head>
+<body>
+<a href='javascript:myclick()' id="1" >连接</a> 
+<a href='javascript:myclick()' id="2" >连接1</a> 
+<a href='javascript:myclick()' id="3" >连接11</a> 
+<a href='javascript:myclick()' id="4" >连接111</a> 
+<a href='javascript:myclick()' id="5" >连接1111</a> 
+<input type="button" value="确定" onclick="doLinkAll()">
+</body>
+</html>

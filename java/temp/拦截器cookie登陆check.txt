@@ -1,0 +1,85 @@
+package cn.minimal.growing.action.ipt;
+
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.StrutsStatics;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import cn.minimal.growing.config.WebConfig;
+import cn.minimal.growing.entity.User;
+import cn.minimal.growing.service.web.UserWebService;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
+
+/**
+ * Cooke登陆检查
+ * 
+ * @author mqh
+ * 
+ */
+@Controller
+@Scope("prototype")
+public class CookeLoginCheckIpt extends MethodFilterInterceptor {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Autowired
+	@Qualifier("userWebServiceImp")
+	private UserWebService userWebService;
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected String doIntercept(ActionInvocation invocation) throws Exception {
+
+		Map<String, Object> session = (Map<String, Object>) invocation.getInvocationContext().get(ServletActionContext.SESSION);
+		ActionContext actionContext = invocation.getInvocationContext();
+		HttpServletResponse response = (HttpServletResponse)ActionContext.getContext().get(org.apache.struts2.StrutsStatics.HTTP_RESPONSE);
+		HttpServletRequest request= (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST); 
+		if (session.get(WebConfig.LOGIN_SESSION_USER_KEY) == null) {
+			String value = null;
+			Cookie[] cks = null;
+			cks  = request.getCookies();
+			if (cks != null) {
+				for (Cookie ck : cks) {
+					if (ck.getName().equals(WebConfig.USER_AUTOLOGIN_COOKIE)) {
+						value = ck.getValue();
+					}
+				}
+			}
+			if (value != null) {
+				User user = userWebService.cookieLogin(value);
+				if (user != null) {
+					session.put(WebConfig.LOGIN_SESSION_USER_KEY, user);
+					if(request.getRequestURI().equals("/html_login_login.do")){						
+						response.sendRedirect("home");
+					}
+				}
+			}else{
+				if(!request.getRequestURI().equals("/html_login_login.do")){
+					if(!request.getRequestURI().equals("/users/userview_login.do")){
+						response.sendRedirect("html_login_login.do");	
+					}
+				}
+			}
+		}else{
+			String path =request.getRequestURI();
+			if(path.equals("/html_login_login.do")){
+				response.sendRedirect("home");
+			}
+		}
+		return invocation.invoke();
+	}
+}

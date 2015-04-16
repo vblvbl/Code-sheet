@@ -1,0 +1,6 @@
+ <if test="fids != null">
+	AND u.id not in
+	<foreach item="item" index="index" collection="fids" open="(" separator="," close=")">
+	    #{item}
+    </foreach>
+</if>

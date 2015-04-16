@@ -1,0 +1,151 @@
+public String dingedaoru() {
+		try {
+			ServletContext servletContext = request.getSession().getServletContext();
+			String path = servletContext.getRealPath("/projectCollectMuBan/dinge.xls");
+			BufferedInputStream in = new BufferedInputStream(new FileInputStream(new File(path)));
+			POIFSFileSystem fs = new POIFSFileSystem(in);
+			HSSFWorkbook workbook2 = new HSSFWorkbook(fs);
+			HSSFSheet sheet = workbook2.getSheetAt(0);
+			int row = sheet.getLastRowNum();
+			boolean b = true;
+			HSSFCell hssfCell;
+			int dingeid = 0;
+			int zhucaiid = 0;
+			for (int i = 0; i < row+1; i++) {
+				HSSFRow hrow = sheet.getRow(i);
+				AnZhuangZhuCai az = new AnZhuangZhuCai();
+				AnZhuangDinge   azd = new AnZhuangDinge();
+				
+				for (int k = 0; k < hrow.getPhysicalNumberOfCells(); k++) {
+					hssfCell = hrow.getCell(k);
+					if (i > 2) {
+						if (k == 0) {
+							if (0 == hssfCell.getCellType()) {
+								b = true;
+							} else {
+								b = false;
+							}
+						}
+					}
+					if (b) {
+						if (k == 1) {
+							azd.setBianhao(hssfCell.getStringCellValue());
+						} else if (k == 2) {
+							azd.setMingcheng(hssfCell.getStringCellValue());
+						} else if (k == 3) {
+							azd.setDanwei(hssfCell.getStringCellValue());
+						} else if (k == 4) {
+							try {
+								azd.setGongchengliang(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setGongchengliang(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 5) {
+							try {
+								azd.setDanjia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setDanjia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 6) {
+							try {
+								azd.setRengonghejia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setRengonghejia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 7) {
+							try {
+								azd.setCailiaohejia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setCailiaohejia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 8) {
+							try {
+								azd.setJixiehejia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setJixiehejia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 9) {
+							try {
+								azd.setGuanlifeihejia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setGuanlifeihejia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 10) {
+							try {
+								azd.setLirunhejia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setLirunhejia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 11) {
+							try {
+								azd.setZhucaihanliang(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setZhucaihanliang(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 12) {
+							try {
+								azd.setZhucaidanjia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setZhucaidanjia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 13) {
+							try {
+								azd.setZhucaihejia(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setZhucaihejia(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 14) {
+							try {
+								azd.setHanliang(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setHanliang(hssfCell.getNumericCellValue()+"");
+							}
+						} else if (k == 15) {
+							try {
+								azd.setHeji(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								azd.setHeji(hssfCell.getNumericCellValue()+"");
+							}
+						}
+					}else{
+					
+						if (k == 1) {
+							az.setBianhao(hssfCell.getStringCellValue());
+						} else if (k == 2) {
+							az.setMingcheng(hssfCell.getStringCellValue());
+						} else if (k == 3) {
+							az.setDanwei(hssfCell.getStringCellValue());
+						} else if (k == 4) {
+							try {
+								az.setGongchengliang(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								az.setGongchengliang(hssfCell.getNumericCellValue()+"");
+							}
+						} else if(k ==11){
+							try {
+								az.setZhucaihanliang(hssfCell.getStringCellValue());
+							} catch (Exception e) {
+								az.setZhucaihanliang(hssfCell.getNumericCellValue()+"");
+							}
+						}
+					}
+
+				}
+				
+				if(b){
+					dingeid++;
+				}else{
+					zhucaiid++;
+				}
+				azd.setId(dingeid);
+				az.setSuoshuid(dingeid);
+				az.setId(zhucaiid);
+				anzhuangdingeService.insertAnZhuangDinge(az, azd);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return SUCCESS;
+	}
