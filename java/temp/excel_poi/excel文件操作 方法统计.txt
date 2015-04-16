@@ -1,0 +1,9 @@
+//下移输入行下所有行,包括自己行
+sheet.shiftRows(15, sheet.getLastRowNum(), 1,true,false);
+
+
+HSSFRow r =  sheet.createRow(20);
+			sheet.shiftRows(20, sheet.getLastRowNum(), 1,true,false);
+			
+			sheet.addMergedRegion(new Region(1,(short)1,2,(short)2));
+			

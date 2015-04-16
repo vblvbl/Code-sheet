@@ -1,0 +1,11 @@
+ ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("JavaScript");
+		try {
+			String script = "function js(){return (1+1)*3/2+1; }";
+			engine.eval(script);
+			Invocable inv = (Invocable) engine;
+			Double res = (Double) inv.invokeFunction("js");
+			System.out.println(res);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
